@@ -43,8 +43,8 @@ readonly YELLOW='\033[0;33m'
 readonly BLUE='\033[0;34m'
 readonly NC='\033[0m'
 
-info()    { echo -e "${BLUE}==>${NC} $*"; }
-success() { echo -e "${GREEN}✓${NC} $*"; }
+info()    { echo -e "${BLUE}==>${NC} $*" >&2; }
+success() { echo -e "${GREEN}✓${NC} $*" >&2; }
 warn()    { echo -e "${YELLOW}!${NC} $*" >&2; }
 error()   { echo -e "${RED}✗${NC} $*" >&2; }
 
