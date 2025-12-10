@@ -28,7 +28,7 @@ set -euo pipefail
 DOTFILES_REPO="${DOTFILES_REPO:-lukelukes/dotfiles}"
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
 BOOSTER_REPO="${BOOSTER_REPO:-lukelukes/booster}"
-BOOSTER_VERSION="${BOOSTER_VERSION:-0.3.0}"
+BOOSTER_VERSION="${BOOSTER_VERSION:-0.4.0}"
 
 # SHA256 checksums for booster binaries
 # Update these when releasing new versions of booster
