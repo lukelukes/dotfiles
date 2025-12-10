@@ -1,0 +1,105 @@
+zmodload zsh/zprof
+
+export LANG="en_US.UTF-8"
+export EDITOR="${EDITOR:-nvim}"
+export VISUAL="$EDITOR"
+export PAGER="less"
+
+# XDG Base Directories
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+
+# Tool-specific XDG paths
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+export GOPATH="$XDG_DATA_HOME/go"
+export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+export NODE_REPL_HISTORY="$XDG_STATE_HOME/node_repl_history"
+export PYTHON_HISTORY="$XDG_STATE_HOME/python/history"
+export PYTHONPYCACHEPREFIX="$XDG_CACHE_HOME/python"
+export LESSHISTFILE="$XDG_STATE_HOME/less/history"
+export GNUPGHOME="$XDG_DATA_HOME/gnupg"
+
+# Path
+export PATH="$HOME/.local/bin:$PATH"
+
+# Homebrew (macOS)
+if [[ -f "/opt/homebrew/bin/brew" ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -f "/usr/local/bin/brew" ]]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+# ------------------------------------------------------------------------------
+# History
+# ------------------------------------------------------------------------------
+
+HISTFILE="$XDG_STATE_HOME/zsh/history"
+HISTSIZE=50000
+SAVEHIST=50000
+
+setopt EXTENDED_HISTORY
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_VERIFY
+setopt SHARE_HISTORY
+
+# ------------------------------------------------------------------------------
+# Options
+# ------------------------------------------------------------------------------
+
+setopt AUTO_CD
+setopt AUTO_PUSHD
+setopt PUSHD_IGNORE_DUPS
+setopt CORRECT
+# setopt NO_BEEP
+
+# ------------------------------------------------------------------------------
+# Completion
+# ------------------------------------------------------------------------------
+
+if [[ -f /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh ]]; then
+    source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+elif [[ -f /usr/share/zsh/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh ]]; then
+    source /usr/share/zsh/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+fi
+
+autoload -Uz compinit && compinit -d "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+
+# ------------------------------------------------------------------------------
+# Tools
+# ------------------------------------------------------------------------------
+
+eval "$(zoxide init zsh --cmd cd)"
+
+# fzf
+if command -v fzf &>/dev/null; then
+    source <(fzf --zsh) 2>/dev/null || true
+    export FZF_DEFAULT_OPTS="--height=40% --layout=reverse --border"
+    command -v fd &>/dev/null && export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git'
+fi
+
+mise &>/dev/null && eval "$(mise activate zsh)"
+
+# direnv &>/dev/null && eval "$(direnv hook zsh)"
+
+eval "$(starship init zsh)"
+
+source "$XDG_CONFIG_HOME/zsh/aliases.sh"
+
+# ------------------------------------------------------------------------------
+# Local overrides
+# ------------------------------------------------------------------------------
+
+# [[ -f "$XDG_CONFIG_HOME/zsh/zshrc.local" ]] && source "$XDG_CONFIG_HOME/zsh/zshrc.local"
+# [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"  # Legacy fallback
+
+if (( ${+ZSH_PROFILING} )); then
+  zprof
+fi

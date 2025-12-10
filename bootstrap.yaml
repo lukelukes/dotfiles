@@ -1,0 +1,136 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/lukelukes/booster/refs/tags/v0.3.0/schema.json
+
+version: "1"
+
+profiles: [personal, work]
+
+# variables:
+#   CONFIG_DIR: ~/.config
+
+tasks:
+  - action: pkg-manager.install
+    when:
+      os: arch
+    prompt_for_sudo: true
+    args:
+      - paru
+
+  - action: pkg-manager.install
+    when:
+      os: darwin
+    args:
+      - homebrew
+
+  - action: dir.create
+    args:
+      - ~/.config
+      - ~/.local/bin
+
+  - action: pkg.install
+    prompt_for_sudo: true
+    args:
+      - bat
+      - curl
+      - dust
+      - duf
+      - eza
+      - fd
+      - fzf
+      - git
+      - gnupg
+      - gum
+      - btop
+      - jq
+      - lazygit
+      - lazydocker
+      - multitail
+      - neovim
+      - ripgrep
+      - sd
+      - shellcheck
+      - shfmt
+      - starship
+      - tmux
+      - tree
+      - unzip
+      - yq
+      - zoxide
+      - zsh
+      - helm
+      - k9s
+      - kubectl
+      - terraform
+      - mise
+      - uv
+
+  - action: pkg.install
+    when:
+      os: arch
+    prompt_for_sudo: true
+    args:
+      - git-delta
+      - zsh-autocomplete-git
+      - ghostty
+      - zen-browser-bin
+      - obsidian-appimage
+      - ttf-jetbrains-mono-nerd
+      - ttf-firacode-nerd
+      - inter-font
+      - github-cli
+      - docker
+
+  - action: pkg.install
+    when:
+      os: darwin
+    args:
+      - packages:
+          - zsh-autocomplete
+          - delta
+          - gh
+      - casks:
+          - visual-studio-code
+          - google-chrome
+          - ghostty
+          - zen
+          - raycast
+          - obsidian
+          - orbstack
+          - font-jetbrains-mono-nerd-font
+          - font-fira-code-nerd-font
+          - font-inter
+          - zed
+          - jetbrains-toolbox
+
+  - action: pkg.install
+    when:
+      profile: [work]
+      os: [darwin]
+    args: [awscli]
+
+  - action: set.darwin.defaults
+    when:
+      os: darwin
+    args:
+      file: mac/defaults.yaml
+
+  - action: git.config
+    args:
+      - key: init.defaultBranch
+        value: master
+
+  - action: mise.use
+    args:
+      - go@1.25.5
+      - node@25.2.1
+      - rust@1.91.1
+      - java@21.0.1
+      - bun@1.3.4
+
+  - action: symlink.create
+    args:
+      - source: aliases.sh
+        target: ~/.config/aliases.sh
+      - source: zsh/zshrc
+        target: ~/.zshrc
+      - source: starship.toml
+        target: ~/.config/starship.toml

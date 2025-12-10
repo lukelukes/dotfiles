@@ -1,0 +1,298 @@
+# macOS defaults for developers
+# Used by set.darwin.defaults action
+# Most changes require logout or restart
+
+defaults:
+  # ==========================================================================
+  # Accessibility - Reduce Motion
+  # ==========================================================================
+  - domain: com.apple.universalaccess
+    key: reduceMotion
+    type: bool
+    value: true
+
+  # ==========================================================================
+  # Keyboard
+  # ==========================================================================
+  # Enable key repeat (disable press-and-hold for accents)
+  - domain: NSGlobalDomain
+    key: ApplePressAndHoldEnabled
+    type: bool
+    value: false
+
+  # Fast key repeat
+  - domain: NSGlobalDomain
+    key: KeyRepeat
+    type: int
+    value: 2
+
+  - domain: NSGlobalDomain
+    key: InitialKeyRepeat
+    type: int
+    value: 15
+
+  # Disable auto-correct
+  - domain: NSGlobalDomain
+    key: NSAutomaticSpellingCorrectionEnabled
+    type: bool
+    value: false
+
+  - domain: NSGlobalDomain
+    key: NSAutomaticCapitalizationEnabled
+    type: bool
+    value: false
+
+  - domain: NSGlobalDomain
+    key: NSAutomaticPeriodSubstitutionEnabled
+    type: bool
+    value: false
+
+  - domain: NSGlobalDomain
+    key: NSAutomaticQuoteSubstitutionEnabled
+    type: bool
+    value: false
+
+  - domain: NSGlobalDomain
+    key: NSAutomaticDashSubstitutionEnabled
+    type: bool
+    value: false
+
+  # ==========================================================================
+  # Window Animations
+  # ==========================================================================
+  # Disable window open/close animations
+  - domain: NSGlobalDomain
+    key: NSAutomaticWindowAnimationsEnabled
+    type: bool
+    value: false
+
+  # Instant window resize (default is 0.2)
+  - domain: NSGlobalDomain
+    key: NSWindowResizeTime
+    type: float
+    value: 0.001
+
+  # Disable smooth scrolling
+  - domain: NSGlobalDomain
+    key: NSScrollAnimationEnabled
+    type: bool
+    value: false
+
+  # Instant Quick Look window
+  - domain: "-g"
+    key: QLPanelAnimationDuration
+    type: float
+    value: 0
+
+  # ==========================================================================
+  # Finder
+  # ==========================================================================
+  # Show hidden files
+  - domain: com.apple.finder
+    key: AppleShowAllFiles
+    type: bool
+    value: true
+
+  # Show all extensions
+  - domain: NSGlobalDomain
+    key: AppleShowAllExtensions
+    type: bool
+    value: true
+
+  # Show path bar and status bar
+  - domain: com.apple.finder
+    key: ShowPathbar
+    type: bool
+    value: true
+
+  - domain: com.apple.finder
+    key: ShowStatusBar
+    type: bool
+    value: true
+
+  # Search current folder by default
+  - domain: com.apple.finder
+    key: FXDefaultSearchScope
+    type: string
+    value: "SCcf"
+
+  # Disable extension change warning
+  - domain: com.apple.finder
+    key: FXEnableExtensionChangeWarning
+    type: bool
+    value: false
+
+  # No .DS_Store on network/USB
+  - domain: com.apple.desktopservices
+    key: DSDontWriteNetworkStores
+    type: bool
+    value: true
+
+  - domain: com.apple.desktopservices
+    key: DSDontWriteUSBStores
+    type: bool
+    value: true
+
+  # List view by default
+  - domain: com.apple.finder
+    key: FXPreferredViewStyle
+    type: string
+    value: "Nlsv"
+
+  # Auto-delete trash items older than 30 days
+  - domain: com.apple.finder
+    key: FXRemoveOldTrashItems
+    type: bool
+    value: true
+
+  # Small sidebar icons (1=small, 2=medium, 3=large)
+  - domain: NSGlobalDomain
+    key: NSTableViewDefaultSizeMode
+    type: int
+    value: 1
+
+  # Hide iCloud Desktop from sidebar
+  - domain: com.apple.finder
+    key: SidebarShowingiCloudDesktop
+    type: bool
+    value: false
+
+  # Disable Finder animations
+  - domain: com.apple.finder
+    key: DisableAllAnimations
+    type: bool
+    value: true
+
+  # ==========================================================================
+  # Dock
+  # ==========================================================================
+  # Icon size
+  - domain: com.apple.dock
+    key: tilesize
+    type: int
+    value: 42
+
+  # Auto-hide with no delay
+  - domain: com.apple.dock
+    key: autohide
+    type: bool
+    value: true
+
+  - domain: com.apple.dock
+    key: autohide-delay
+    type: float
+    value: 0
+
+  - domain: com.apple.dock
+    key: autohide-time-modifier
+    type: float
+    value: 0.3
+
+  # Don't rearrange Spaces
+  - domain: com.apple.dock
+    key: mru-spaces
+    type: bool
+    value: false
+
+  # No recent apps
+  - domain: com.apple.dock
+    key: show-recents
+    type: bool
+    value: false
+
+  # Fast Mission Control animation
+  - domain: com.apple.dock
+    key: expose-animation-duration
+    type: float
+    value: 0.1
+
+  # Group windows by application in Mission Control
+  - domain: com.apple.dock
+    key: expose-group-apps
+    type: bool
+    value: true
+
+  # Fast Launchpad animations
+  - domain: com.apple.dock
+    key: springboard-show-duration
+    type: float
+    value: 0.1
+
+  - domain: com.apple.dock
+    key: springboard-hide-duration
+    type: float
+    value: 0.1
+
+  # ==========================================================================
+  # Trackpad
+  # ==========================================================================
+  # Tap to click
+  - domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+    key: Clicking
+    type: bool
+    value: true
+
+  - domain: NSGlobalDomain
+    key: com.apple.mouse.tapBehavior
+    type: int
+    value: 1
+
+  # Three-finger drag
+  - domain: com.apple.AppleMultitouchTrackpad
+    key: TrackpadThreeFingerDrag
+    type: bool
+    value: true
+
+  # ==========================================================================
+  # Screenshots
+  # ==========================================================================
+  - domain: com.apple.screencapture
+    key: location
+    type: string
+    value: "~/Desktop"
+
+  - domain: com.apple.screencapture
+    key: type
+    type: string
+    value: "png"
+
+  - domain: com.apple.screencapture
+    key: disable-shadow
+    type: bool
+    value: true
+
+  # ==========================================================================
+  # Safari (dev)
+  # ==========================================================================
+  - domain: com.apple.Safari
+    key: IncludeDevelopMenu
+    type: bool
+    value: true
+
+  - domain: com.apple.Safari
+    key: WebKitDeveloperExtrasEnabledPreferenceKey
+    type: bool
+    value: true
+
+  # ==========================================================================
+  # Mail.app
+  # ==========================================================================
+  # Disable reply/send animations
+  - domain: com.apple.mail
+    key: DisableReplyAnimations
+    type: bool
+    value: true
+
+  - domain: com.apple.mail
+    key: DisableSendAnimations
+    type: bool
+    value: true
+
+  # ==========================================================================
+  # Apple Intelligence / Privacy
+  # ==========================================================================
+  # Opt out of Apple Intelligence features
+  - domain: com.apple.CloudSubscriptionFeatures.optIn
+    key: "545129924"
+    type: bool
+    value: false
