@@ -9,6 +9,15 @@
 #   BOOSTER_VERSION   - Version to download (default: 0.1.0)
 #   SKIP_CHECKSUM     - Set to "1" to skip checksum validation (NOT recommended)
 #
+# Compatibility: Bash 3.2+ (macOS default bash is supported)
+#
+
+# Verify we're running in bash (not sh, dash, zsh, etc.)
+# shellcheck disable=SC2292  # Intentional: [ ] works in sh/dash, [[ ]] doesn't
+if [ -z "${BASH_VERSION:-}" ]; then
+    echo "Error: This script requires bash. Run with: bash $0" >&2
+    exit 1
+fi
 
 set -euo pipefail
 
@@ -27,8 +36,8 @@ BOOSTER_VERSION="${BOOSTER_VERSION:-0.3.0}"
 get_checksum() {
     local platform="$1"
     case "$platform" in
-        linux_amd64)  echo "8e850efb825bb74301c5c8d7636d75ccb412465884bd897cc408de5abbfcfe94" ;;
-        darwin_arm64) echo "b54e19a8921797b771546ad435c089d207161018e7fb0f4bf630db87381f3e48" ;;
+        linux_amd64)  echo "cf886fc773cc977a615b21b30e31c954a1e1581c88b622ff7d933fe2b98ea871" ;;
+        darwin_arm64) echo "eb18b3e76bf61223efe0a75a85de969f8ae76d3110995f3505cc3071aa258cb5" ;;
         *)            echo "" ;;
     esac
 }
@@ -43,10 +52,10 @@ readonly YELLOW='\033[0;33m'
 readonly BLUE='\033[0;34m'
 readonly NC='\033[0m'
 
-info()    { echo -e "${BLUE}==>${NC} $*" >&2; }
-success() { echo -e "${GREEN}✓${NC} $*" >&2; }
-warn()    { echo -e "${YELLOW}!${NC} $*" >&2; }
-error()   { echo -e "${RED}✗${NC} $*" >&2; }
+info()    { printf '%b\n' "${BLUE}==> $*${NC}" >&2; }
+success() { printf '%b\n' "${GREEN}✓ $*${NC}" >&2; }
+warn()    { printf '%b\n' "${YELLOW}! $*${NC}" >&2; }
+error()   { printf '%b\n' "${RED}✗ $*${NC}" >&2; }
 
 die() {
     error "$@"
@@ -184,10 +193,12 @@ install_booster() {
         die "No checksum defined for platform: $platform"
     fi
 
-    # Create temp directory with cleanup trap
+    # Create temp directory with cleanup trap for error cases
+    # Note: trap is removed on success path (see end of function)
     local tmp_dir
     tmp_dir="$(mktemp -d)"
-    trap 'rm -rf "$tmp_dir"' EXIT
+    # shellcheck disable=SC2064  # Intentional: capture $tmp_dir value now, not at signal time
+    trap "rm -rf \"$tmp_dir\"" EXIT
 
     # Construct download URL
     # Assumes release artifacts are named: booster_VERSION_OS_ARCH.tar.gz
@@ -196,6 +207,7 @@ install_booster() {
     local archive_path="${tmp_dir}/${archive_name}"
 
     info "Downloading from GitHub releases..."
+    # shellcheck disable=SC2310  # Intentional: we handle failure explicitly below
     if ! download "$download_url" "$archive_path"; then
         error "Failed to download booster"
         error "URL: $download_url"
@@ -225,6 +237,10 @@ install_booster() {
 
     mkdir -p "$install_dir"
     mv "$binary_path" "$install_path"
+
+    # Clean up temp directory and remove trap (trap was for error cases)
+    rm -rf "$tmp_dir"
+    trap - EXIT
 
     success "Booster installed to $install_path"
     echo "$install_path"

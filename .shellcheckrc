@@ -1,0 +1,14 @@
+# ShellCheck configuration - https://github.com/koalaman/shellcheck
+# Run: shellcheck scripts/**/*.sh
+
+# Default shell (bash for this project)
+# Note: Scripts must be compatible with Bash 3.2 (macOS default)
+shell=bash
+
+# Enable all optional checks
+enable=all
+
+# Disable specific checks with rationale:
+
+# SC2250: Prefer braces around variable references - stylistic; $var is valid bash
+disable=SC2250

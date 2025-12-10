@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/lukelukes/booster/refs/tags/v0.3.0/schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/lukelukes/booster/refs/tags/v0.4.0/schema.json
 
 version: "1"
 
@@ -128,9 +128,9 @@ tasks:
 
   - action: symlink.create
     args:
-      - source: aliases.sh
+      - source: config/aliases.sh
         target: ~/.config/aliases.sh
-      - source: zsh/zshrc
+      - source: config/zshrc
         target: ~/.zshrc
-      - source: starship.toml
+      - source: config/starship.toml
         target: ~/.config/starship.toml
