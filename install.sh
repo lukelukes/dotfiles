@@ -16,9 +16,9 @@ set -euo pipefail
 # Configuration
 # =============================================================================
 
-DOTFILES_REPO="${DOTFILES_REPO:-USER/dotfiles}"
+DOTFILES_REPO="${DOTFILES_REPO:-lukelukes/dotfiles}"
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
-BOOSTER_REPO="${BOOSTER_REPO:-USER/booster}"
+BOOSTER_REPO="${BOOSTER_REPO:-lukelukes/booster}"
 BOOSTER_VERSION="${BOOSTER_VERSION:-0.3.0}"
 
 # SHA256 checksums for booster binaries
