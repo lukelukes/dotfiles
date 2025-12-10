@@ -24,10 +24,14 @@ BOOSTER_VERSION="${BOOSTER_VERSION:-0.3.0}"
 # SHA256 checksums for booster binaries
 # Update these when releasing new versions of booster
 # Generate with: sha256sum booster_*.tar.gz
-declare -A CHECKSUMS=(
-    ["linux_amd64"]="8e850efb825bb74301c5c8d7636d75ccb412465884bd897cc408de5abbfcfe94"
-    ["darwin_arm64"]="b54e19a8921797b771546ad435c089d207161018e7fb0f4bf630db87381f3e48"
-)
+get_checksum() {
+    local platform="$1"
+    case "$platform" in
+        linux_amd64)  echo "8e850efb825bb74301c5c8d7636d75ccb412465884bd897cc408de5abbfcfe94" ;;
+        darwin_arm64) echo "b54e19a8921797b771546ad435c089d207161018e7fb0f4bf630db87381f3e48" ;;
+        *)            echo "" ;;
+    esac
+}
 
 # =============================================================================
 # Output Helpers
@@ -174,7 +178,8 @@ install_booster() {
     info "Installing booster v${BOOSTER_VERSION} (${os}/${arch})..."
 
     # Get expected checksum
-    local expected_checksum="${CHECKSUMS[$platform]:-}"
+    local expected_checksum
+    expected_checksum="$(get_checksum "$platform")"
     if [[ -z "$expected_checksum" ]]; then
         die "No checksum defined for platform: $platform"
     fi
