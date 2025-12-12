@@ -1,15 +1,12 @@
 #!/usr/bin/env bash
 #
-# Dotfiles Bootstrap Script
-# Usage: curl -sSL https://raw.githubusercontent.com/USER/dotfiles/main/install.sh | bash -s -- <profile>
+# Usage: curl -fsSL https://raw.githubusercontent.com/lukelukes/dotfiles/master/install.sh | bash -s -- <profile>
 #
 # Environment variables:
-#   DOTFILES_REPO     - GitHub repo (default: USER/dotfiles)
+#   DOTFILES_REPO     - GitHub repo (default: lukelukes/dotfiles)
 #   DOTFILES_DIR      - Local clone directory (default: ~/.dotfiles)
-#   BOOSTER_VERSION   - Version to download (default: 0.1.0)
+#   BOOSTER_VERSION   - Version to download (default: 0.4.0)
 #   SKIP_CHECKSUM     - Set to "1" to skip checksum validation (NOT recommended)
-#
-# Compatibility: Bash 3.2+ (macOS default bash is supported)
 #
 
 # Verify we're running in bash (not sh, dash, zsh, etc.)
@@ -36,9 +33,9 @@ BOOSTER_VERSION="${BOOSTER_VERSION:-0.4.0}"
 get_checksum() {
     local platform="$1"
     case "$platform" in
-        linux_amd64)  echo "cf886fc773cc977a615b21b30e31c954a1e1581c88b622ff7d933fe2b98ea871" ;;
+        linux_amd64) echo "cf886fc773cc977a615b21b30e31c954a1e1581c88b622ff7d933fe2b98ea871" ;;
         darwin_arm64) echo "eb18b3e76bf61223efe0a75a85de969f8ae76d3110995f3505cc3071aa258cb5" ;;
-        *)            echo "" ;;
+        *) echo "" ;;
     esac
 }
 
@@ -52,10 +49,10 @@ readonly YELLOW='\033[0;33m'
 readonly BLUE='\033[0;34m'
 readonly NC='\033[0m'
 
-info()    { printf '%b\n' "${BLUE}==> $*${NC}" >&2; }
+info() { printf '%b\n' "${BLUE}==> $*${NC}" >&2; }
 success() { printf '%b\n' "${GREEN}✓ $*${NC}" >&2; }
-warn()    { printf '%b\n' "${YELLOW}! $*${NC}" >&2; }
-error()   { printf '%b\n' "${RED}✗ $*${NC}" >&2; }
+warn() { printf '%b\n' "${YELLOW}! $*${NC}" >&2; }
+error() { printf '%b\n' "${RED}✗ $*${NC}" >&2; }
 
 die() {
     error "$@"
@@ -71,9 +68,9 @@ detect_os() {
     os="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
     case "$os" in
-        linux)  echo "linux" ;;
+        linux) echo "linux" ;;
         darwin) echo "darwin" ;;
-        *)      die "Unsupported OS: $os (only linux and darwin are supported)" ;;
+        *) die "Unsupported OS: $os (only linux and darwin are supported)" ;;
     esac
 }
 
@@ -82,10 +79,10 @@ detect_arch() {
     arch="$(uname -m)"
 
     case "$arch" in
-        x86_64)          echo "amd64" ;;
-        amd64)           echo "amd64" ;;
-        aarch64|arm64)   echo "arm64" ;;
-        *)               die "Unsupported architecture: $arch" ;;
+        x86_64) echo "amd64" ;;
+        amd64) echo "amd64" ;;
+        aarch64 | arm64) echo "arm64" ;;
+        *) die "Unsupported architecture: $arch" ;;
     esac
 }
 
@@ -96,9 +93,9 @@ detect_arch() {
 compute_sha256() {
     local file="$1"
 
-    if command -v sha256sum &>/dev/null; then
+    if command -v sha256sum &> /dev/null; then
         sha256sum "$file" | cut -d' ' -f1
-    elif command -v shasum &>/dev/null; then
+    elif command -v shasum &> /dev/null; then
         shasum -a 256 "$file" | cut -d' ' -f1
     else
         die "No SHA256 tool available (need sha256sum or shasum)"
@@ -137,9 +134,9 @@ download() {
     local url="$1"
     local dest="$2"
 
-    if command -v curl &>/dev/null; then
+    if command -v curl &> /dev/null; then
         curl -fsSL "$url" -o "$dest"
-    elif command -v wget &>/dev/null; then
+    elif command -v wget &> /dev/null; then
         wget -q "$url" -O "$dest"
     else
         die "No download tool available (need curl or wget)"
@@ -153,7 +150,7 @@ download() {
 clone_dotfiles() {
     info "Setting up dotfiles repository..."
 
-    if ! command -v git &>/dev/null; then
+    if ! command -v git &> /dev/null; then
         die "git is required but not installed"
     fi
 
@@ -161,7 +158,7 @@ clone_dotfiles() {
         warn "Dotfiles directory already exists at $DOTFILES_DIR"
         info "Pulling latest changes..."
 
-        if ! git -C "$DOTFILES_DIR" pull --ff-only 2>/dev/null; then
+        if ! git -C "$DOTFILES_DIR" pull --ff-only 2> /dev/null; then
             warn "Could not pull (may have local changes), continuing with existing files"
         fi
     else
@@ -271,7 +268,7 @@ run_booster() {
 # =============================================================================
 
 usage() {
-    cat <<EOF
+    cat << EOF
 Dotfiles Bootstrap Script
 
 Usage:

@@ -79,7 +79,7 @@ defaults:
     value: false
 
   # Instant Quick Look window
-  - domain: "-g"
+  - domain: -g
     key: QLPanelAnimationDuration
     type: float
     value: 0
@@ -114,7 +114,7 @@ defaults:
   - domain: com.apple.finder
     key: FXDefaultSearchScope
     type: string
-    value: "SCcf"
+    value: SCcf
 
   # Disable extension change warning
   - domain: com.apple.finder
@@ -137,7 +137,7 @@ defaults:
   - domain: com.apple.finder
     key: FXPreferredViewStyle
     type: string
-    value: "Nlsv"
+    value: Nlsv
 
   # Auto-delete trash items older than 30 days
   - domain: com.apple.finder
@@ -249,12 +249,12 @@ defaults:
   - domain: com.apple.screencapture
     key: location
     type: string
-    value: "~/Desktop"
+    value: ~/Desktop
 
   - domain: com.apple.screencapture
     key: type
     type: string
-    value: "png"
+    value: png
 
   - domain: com.apple.screencapture
     key: disable-shadow
@@ -293,6 +293,6 @@ defaults:
   # ==========================================================================
   # Opt out of Apple Intelligence features
   - domain: com.apple.CloudSubscriptionFeatures.optIn
-    key: "545129924"
+    key: 545129924
     type: bool
     value: false

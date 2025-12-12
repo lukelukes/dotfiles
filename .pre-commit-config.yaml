@@ -1,0 +1,76 @@
+# Pre-commit hooks - https://pre-commit.com
+# Run: pre-commit install && pre-commit run --all-files
+default_stages: [pre-commit]
+
+repos:
+  # =============================================================================
+  # General file checks
+  # =============================================================================
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+        args: [--unsafe]
+      - id: check-merge-conflict
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+      - id: detect-private-key
+      - id: mixed-line-ending
+        args: [--fix=lf]
+
+  # =============================================================================
+  # Shell scripts: ShellCheck + shfmt
+  # =============================================================================
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+        args: [--severity=warning]
+        files: \.(sh|bash)$|^install\.sh$
+
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: v3.10.0-1
+    hooks:
+      - id: shfmt
+        args: [-i, "4", -ci, -sr, -w]
+        files: \.(sh|bash)$|^install\.sh$
+
+  # =============================================================================
+  # YAML validation
+  # =============================================================================
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+        args: [-c, .yamllint.yml]
+        exclude: ^research/
+
+  # =============================================================================
+  # Markdown (optional - for docs)
+  # =============================================================================
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.43.0
+    hooks:
+      - id: markdownlint
+        args: [--fix, --disable, MD013, MD033, MD041, --]
+        exclude: ^research/
+
+  # =============================================================================
+  # Security
+  # =============================================================================
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.23.3
+    hooks:
+      - id: gitleaks
+
+  # =============================================================================
+  # Typos
+  # =============================================================================
+  - repo: https://github.com/crate-ci/typos
+    rev: v1.31.1
+    hooks:
+      - id: typos
+        args: [--write-changes]
+        exclude: ^research/
