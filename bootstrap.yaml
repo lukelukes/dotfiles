@@ -69,7 +69,7 @@ tasks:
     prompt_for_sudo: true
     args:
       - git-delta
-      - zsh-autocomplete-git
+      - zsh-autosuggestions-git
       - ghostty
       - zen-browser-bin
       - obsidian-appimage
@@ -84,7 +84,7 @@ tasks:
       os: darwin
     args:
       - packages:
-          - zsh-autocomplete
+          - zsh-autosuggestions
           - delta
           - gh
       - casks:
