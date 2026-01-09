@@ -1,0 +1,5 @@
+[tools]
+prek = "0.2.27"
+shellcheck = "0.11.0"
+shfmt = "3.12.0"
+yamllint = "1.37.1"
