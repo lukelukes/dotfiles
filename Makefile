@@ -6,10 +6,10 @@ all: lint
 ##@ Linting
 
 lint: ## Run all linters via pre-commit
-	@pre-commit run --all-files
+	@prek run --all-files
 
 lint-ci: ## Run linters with diff output (for CI)
-	@pre-commit run --all-files --show-diff-on-failure
+	@prek run --all-files --show-diff-on-failure
 
 ##@ Validation
 
@@ -28,16 +28,14 @@ validate-yaml: ## Validate YAML file syntax
 
 setup: ## Install pre-commit hooks
 	@echo "Installing pre-commit hooks..."
-	@pre-commit install
-	@pre-commit install --hook-type commit-msg
+	@prek install
+	@prek install --hook-type commit-msg
 	@echo ""
 	@echo "Setup complete. Run 'make lint' to verify."
 
-check: ## Check required tools are installed
-	@echo "Checking tools..."
-	@printf "pre-commit:   "; command -v pre-commit >/dev/null && echo "OK" || echo "MISSING - uv tool install pre-commit"
-	@printf "shellcheck:   "; command -v shellcheck >/dev/null && echo "OK" || echo "MISSING"
-	@printf "yamllint:     "; command -v yamllint >/dev/null && echo "OK" || echo "MISSING"
+install-tooling: ## Install mise tooling
+	@echo "Installing tooling with mise..."
+	mise install
 
 ##@ Utility
 
